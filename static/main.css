@@ -1,3 +1,7 @@
 .jumbotron * {
     text-align: center;
 }
+
+.container p {
+    text-align: center;
+}
