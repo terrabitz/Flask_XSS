@@ -1,11 +1,11 @@
-.jumbotron * {
-    text-align: center;
-}
-
-.container p {
+* {
     text-align: center;
 }
 
 .card {
     width: 20rem;
+}
+
+.navbar * {
+    text-align: left;
 }
