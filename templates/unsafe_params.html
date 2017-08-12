@@ -5,6 +5,11 @@
         <h1>Hello {{ test | safe }}</h1>
     </div>
     <div class="container">
-        <p>Try setting the "name" parameter in the URL.</p>
+        <p>Try setting the "name" parameter in the URL, or in the following field:.</p>
+        <form method="GET">
+            <label for="name_input">Name</label>
+            <input type="text" class="form-control" name="name" id="name_input" aria-describedby="name_help"
+                   placeholder="Enter name">
+        </form>
     </div>
 {% endblock %}

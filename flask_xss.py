@@ -18,7 +18,7 @@ app.register_blueprint(unsafe_params, url_prefix='/unsafe_params')
 @app.route('/')
 def index():
     pages = {snake_to_title(bp): url_for(bp + '.index') for bp in app.blueprints.keys()}
-    return render_template('index.html', pages=pages)
+    return render_template('index.html', pages=pages, enumerate=enumerate, len=len)
 
 
 if __name__ == '__main__':
