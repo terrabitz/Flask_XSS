@@ -3,15 +3,20 @@ from copy import deepcopy
 from flask import Flask, render_template, g
 from flask_login import LoginManager, current_user
 from flask_sqlalchemy import SQLAlchemy
-from utils import snake_to_title
-from views.admin import admin
-from views.decorators import remove_xss_protection
-from views.sandboxes import (
+
+from app.utils import snake_to_title
+from app.views.admin import admin
+from app.views.decorators import remove_xss_protection
+from app.views.sandboxes import (
     unsafe_params,
     unsafe_cookies
 )
 
 from app.login import load_user
+from app.models import (
+    User,
+    Message
+)
 
 NO_PROTECTION_PREFIX = '/no_protec'
 

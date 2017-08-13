@@ -11,5 +11,4 @@ setup(
     author='Trevor Taubitz',
     author_email='trevor.taubitz@gmail.com',
     url='https://github.com/terrabitz/Flask_XSS',
-    packages=['flask_xss'],
 )
