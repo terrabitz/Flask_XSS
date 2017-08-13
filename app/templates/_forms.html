@@ -1,0 +1,21 @@
+{% macro input(name, label, placeholder="", type="text") -%}
+    <label for="{{ name }}">{{ label }}</label>
+    <input type="{{ type }}" class="form-control" name="{{ name }}" id="{{ name }}" aria-describedby="name_help"
+           placeholder="{{ placeholder }}">
+{%- endmacro %}
+
+{% macro button(text, name="", type="button", style_class="") %}
+    <button type="{{ type }}" class="submit btn {{ style_class }}">{{ text }}</button>
+{%- endmacro %}
+
+{% macro form(fields, method="GET") %}
+    <div class="row">
+        <div class="col-md-4"></div>
+        <form class="col-md-4" method={{ method }}>
+            {% for field in fields %}
+                {{ field }}
+            {% endfor %}
+        </form>
+        <div class="col-md-4"></div>
+    </div>
+{%- endmacro %}

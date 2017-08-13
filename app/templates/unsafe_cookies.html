@@ -1,0 +1,11 @@
+{% extends "_sandbox_base.html" %}
+{% from "_forms.html" import input, form %}
+
+{% block content %}
+    <div class="container">
+        <h1>Hello, {{ name | safe }}</h1>
+        {{ form(method="POST", fields=[
+                input(name="name", label="Name", placeholder="Enter name")
+        ]) }}
+    </div>
+{% endblock %}
