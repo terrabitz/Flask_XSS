@@ -11,7 +11,7 @@ from app.views.sandboxes import (
     unsafe_cookies
 )
 
-from app.login import load_user
+from app.models import load_user
 from app.models import (
     User,
     Message,

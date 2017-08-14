@@ -1,8 +1,15 @@
 from distutils.core import setup
 
-from app.flask_xss import db
+from app.flask_xss import app, db, User
 
-db.create_all()
+with app.app_context():
+    db.create_all()
+    admin_user = User.query.filter_by(username='admin').first()
+    print(admin_user)
+    if not admin_user:
+        admin_user = User(username="admin", password="admin")
+        db.session.add(admin_user)
+        db.session.commit()
 
 setup(
     name='Flask XSS',
