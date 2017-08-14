@@ -2,7 +2,6 @@ from copy import deepcopy
 
 from flask import Flask, render_template, g
 from flask_login import LoginManager, current_user
-from flask_sqlalchemy import SQLAlchemy
 
 from app.utils import snake_to_title
 from app.views.admin import admin
@@ -15,7 +14,8 @@ from app.views.sandboxes import (
 from app.login import load_user
 from app.models import (
     User,
-    Message
+    Message,
+    db
 )
 
 NO_PROTECTION_PREFIX = '/no_protec'
@@ -26,7 +26,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'Keep it secret, keep it safe'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
 
-db = SQLAlchemy(app)
+db.init_app(app)
 
 login_manager.init_app(app)
 login_manager.user_loader(load_user)
