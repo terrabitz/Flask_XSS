@@ -23,16 +23,20 @@
             Flask XSS</a>
         <div class="navbar-collapse">
             {% if g.user.is_authenticated %}
-                <a class="admin-login" href="{{ url_for("admin.logout") }}">
+                <a class="admin-login" href="{{ url_for("authentication.logout") }}">
                     <button class="btn btn-primary">Logout</button>
                 </a>
-                <span class="admin-text navbar-text">You are logged in as admin</span>
-                <a href="{{ url_for("admin.index") }}">
-                    <button class="btn btn-outline-success" type="button">Admin Area</button>
-                </a>
+                {% if g.user.is_admin %}
+                    <span class="admin-text navbar-text">You are logged in as admin</span>
+                    <a href="{{ url_for("admin.index") }}">
+                        <button class="btn btn-outline-success" type="button">Admin Area</button>
+                    </a>
+                {% else %}
+                    <span class="admin-text navbar-text">You are logged in as a regular user</span>
+                {% endif %}
             {% else %}
-                <a class="admin-login" href="{{ url_for("admin.login") }}">
-                    <button class="btn btn-primary">Admin Login</button>
+                <a class="admin-login" href="{{ url_for("authentication.login") }}">
+                    <button class="btn btn-primary">Login</button>
                 </a>
             {% endif %}
         </div>

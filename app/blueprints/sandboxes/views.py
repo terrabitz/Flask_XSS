@@ -1,6 +1,6 @@
 from flask import Blueprint, request, render_template, current_app
 
-unsafe_params = Blueprint('unsafe_params', __name__)
+unsafe_params = Blueprint('unsafe_params', __name__, template_folder='templates')
 
 
 @unsafe_params.route('/')
@@ -11,7 +11,7 @@ def index():
                   '"?name=something" in the header'
 
     name = request.args.get('name', 'world!')
-    return render_template('unsafe_params.html', name=name, title=title, description=description)
+    return render_template('sandboxes/unsafe_params.html', name=name, title=title, description=description)
 
 
 unsafe_cookies = Blueprint('unsafe_cookies', __name__)
@@ -34,6 +34,6 @@ def index():
         name = cookie_name
 
     response = current_app.make_response(
-        render_template('unsafe_cookies.html', name=name, title=title, description=description))
+        render_template('sandboxes/unsafe_cookies.html', name=name, title=title, description=description))
     response.set_cookie('name', name)
     return response

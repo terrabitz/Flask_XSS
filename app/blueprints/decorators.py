@@ -11,7 +11,7 @@ def admin_required(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         if current_user.is_admin:
-            func(*args, **kwargs)
+            return func(*args, **kwargs)
         else:
             abort(401)
 

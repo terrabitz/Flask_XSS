@@ -1,8 +1,8 @@
-{% extends "_sandbox_base.html" %}
+{% extends "_base.html" %}
 {% from "_forms.html" import form, input, button %}
 
 {% block body %}
-    <div class="text-info">Use credentials "admin/admin" to log in</div>
+    <div class="text-info">Use credentials "admin/admin" to log in as admin</div>
     <div class="text-danger"><p>{{ error }}</p></div>
     {{ form(method="POST", fields=[
         input(name="username", placeholder="Username"),
