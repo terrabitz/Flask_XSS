@@ -8,10 +8,7 @@ from app.blueprints.admin.views import AdminOnlyModelView, MessagesView
 from app.blueprints.login.views import authentication
 from app.blueprints.xss_protection.views import xss_protection
 from app.blueprints.api.views import api
-from app.blueprints.sandboxes.views import (
-    unsafe_params,
-    unsafe_cookies
-)
+from app.blueprints.sandboxes.views import sandboxes
 from app.models import (
     User,
     Message,
@@ -19,11 +16,6 @@ from app.models import (
 )
 
 app = Flask(__name__)
-
-sandbox_paths = {
-    unsafe_params: "/unsafe_params",
-    unsafe_cookies: "/unsafe_cookies"
-}
 
 
 def config_app(app):
@@ -59,8 +51,7 @@ def init_extensions(app):
 
 
 def register_blueprints(app):
-    for blueprint, path in sandbox_paths.items():
-        app.register_blueprint(blueprint, url_prefix=path)
+    app.register_blueprint(sandboxes, url_prefix='/sandbox')
 
     # app.register_blueprint(admin, url_prefix='/admin')
     app.register_blueprint(authentication, url_prefix='/auth')
@@ -87,7 +78,10 @@ def after_request(response):
 @app.route('/')
 def index():
     """Create an index of all available sandboxes"""
-    pages = {snake_to_title(bp.name): path for bp, path in sandbox_paths.items()}
+    # Get all paths and endpoints defined under the "Sandboxes" blueprint, and place them on the index
+    rules = [(rule.rule, rule.endpoint.split(".")[1]) for rule in app.url_map.iter_rules()
+             if rule.endpoint.startswith('sandboxes')]
+    pages = {snake_to_title(bp): path for path, bp in rules}
     return render_template('index.html', pages=pages)
 
 

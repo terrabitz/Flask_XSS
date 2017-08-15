@@ -20,6 +20,14 @@ class User(UserMixin, db.Model):
     def is_admin(self):
         return self.username == 'admin'
 
+    @property
+    def serialize(self):
+        return {
+            'username': self.username,
+            'password': self.password,
+            'email': self.email
+        }
+
 
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -31,3 +39,13 @@ class Message(db.Model):
     def __init__(self, message='', from_user='Anonymous'):
         self.message = message
         self.from_user = from_user
+
+    @property
+    def serialize(self):
+        return {
+            'id': self.id,
+            'message': self.message,
+            'from_user': self.from_user,
+            'date': self.date.__str__(),
+            'acknowledged': self.acknowledged
+        }

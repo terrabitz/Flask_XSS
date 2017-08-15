@@ -14,14 +14,15 @@ class MessagesView(FlaskView):
     @admin_required
     def index(self):
         messages = Message.query.all()
+        messages_list = [message.serialize for message in messages]
 
-        response = {'messages': messages}
+        response = {'messages': messages_list}
         response.update(API_STATUS_SUCCESS)
         return jsonify(response)
 
     @admin_required
     def get(self, id):
-        message = Message.query.filter_by(id=id).first()
+        message = Message.query.filter_by(id=id).first().serialize
         if not message:
             return jsonify(API_STATUS_ERROR)
 
@@ -40,7 +41,9 @@ class MessagesView(FlaskView):
         return jsonify(API_STATUS_SUCCESS)
 
     def post(self):
-        data = request.data
+        data = request.get_json()
+        if not data:
+            return API_STATUS_ERROR
         message = data.get('message', None)
         if not message:
             return API_STATUS_ERROR
@@ -52,12 +55,12 @@ class MessagesView(FlaskView):
 
         return jsonify(API_STATUS_SUCCESS)
 
-    @route('/acknowledge/<id>')
+    @route('/acknowledge/<id>', methods=['POST'])
     @admin_required
     def acknowledge_message(self, id):
-        message = Message.query.filter_by(id=id).first()
-        message.acknowledged = True
-        db.session.update(message)
+        Message.query.filter_by(id=id).update({
+            'acknowledged': True
+        })
         db.session.commit()
 
         return jsonify(API_STATUS_SUCCESS)

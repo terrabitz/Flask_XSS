@@ -1,5 +1,12 @@
 {% extends 'admin/master.html' %}
 
+{% block head %}
+    {{ super() }}
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+{% endblock %}
+
 {% block body %}
     <h1>Messages</h1>
     <table class="table">
@@ -13,11 +20,31 @@
         </thead>
         {% for message in messages %}
             <tr>
-            <td><a><i class="glyphicon glyphicon-glyphicon-remove"></i></a></td>
-            <td>{{ message.from_user | safe }}</td>
-            <td>{{ message.message | safe }}</td>
-            <td>{{ message.date | safe }}</td>
+                <td>
+                    <button type="button" class="btn btn-default btn-sm acknowledge-button" aria-label="Left Align"
+                            data-id={{ message.id }}>
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                </td>
+                <td>{{ message.from_user | safe }}</td>
+                <td>{{ message.message | safe }}</td>
+                <td>{{ message.date | safe }}</td>
             </tr>
         {% endfor %}
     </table>
+
+    <script>
+
+        $('.acknowledge-button').click(function () {
+            $.ajax("{{ url_for("api.MessagesView:acknowledge_message", id="") }}" + $(this).attr('data-id'), {
+                "method": "POST"
+            }).done(function (data) {
+                if (data.status = "success") {
+                    location.reload()
+                }
+            })
+
+        })
+
+    </script>
 {% endblock %}
