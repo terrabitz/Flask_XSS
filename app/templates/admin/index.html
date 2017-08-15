@@ -1,1 +1,21 @@
-{% extends "_base.html" %}
+{% extends "admin/master.html" %}
+
+{% block body %}
+    <div class="jumbotron">
+        <h1>Admin Panel</h1>
+    </div>
+    {% if hasattr(g.user, 'is_admin') and g.user.is_admin %}
+    <h3>Welcome to the Admin Panel!</h3>
+    <p>Click the tabs on the top to administer stuff</p>
+    {% else %}
+    <p>To use the admin panel, please login as admin:</p>
+    <a href={{ url_for('authentication.login') }}>
+        <button class="btn btn-success">Login</button>
+    </a>
+    {% endif %}
+    <hr>
+    <p>Click the following button to return to the main app</p>
+    <a href={{ url_for('index') }}>
+        <button class="btn btn-success">Main Page</button>
+    </a>
+{% endblock %}

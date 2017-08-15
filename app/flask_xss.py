@@ -1,10 +1,9 @@
 from flask import Flask, render_template, g, session, request
 from flask_login import LoginManager, current_user
-from flask_migrate import Migrate
 from flask_admin import Admin
-from flask_admin.contrib.sqla import ModelView
 
-from app.utils import snake_to_title, load_user, AdminOnlyModelView
+from app.utils import snake_to_title, load_user
+from app.blueprints.admin.views import AdminOnlyModelView
 # from app.blueprints.admin.views import admin
 from app.blueprints.login.views import authentication
 from app.blueprints.xss_protection.views import xss_protection
@@ -33,7 +32,16 @@ def config_app(app):
     app.config['DEBUG'] = True
 
 
+def add_jinja_functions(app):
+    """Adds desired python functions to be accessible from Jinja templates"""
+    app.jinja_env.globals.update(
+        hasattr=hasattr,
+        enumerate=enumerate,
+        len=len)
+
+
 def init_extensions(app):
+    """Initialize all 3rd party extensions here"""
     # Flask_SQLAlchemy
     db.init_app(app)
 
@@ -41,9 +49,6 @@ def init_extensions(app):
     login_manager = LoginManager()
     login_manager.init_app(app)
     login_manager.user_loader(load_user)
-
-    # Flask_Migrate
-    migrate = Migrate(app, db)
 
     # Flask_Admin
     admin_interface = Admin(app, name='Flask XSS', template_mode='bootstrap3')
@@ -79,10 +84,11 @@ def after_request(response):
 def index():
     """Create an index of all available sandboxes"""
     pages = {snake_to_title(bp.name): path for bp, path in sandbox_paths.items()}
-    return render_template('index.html', pages=pages, enumerate=enumerate, len=len)
+    return render_template('index.html', pages=pages)
 
 
 config_app(app)
+add_jinja_functions(app)
 init_extensions(app)
 register_blueprints(app)
 
