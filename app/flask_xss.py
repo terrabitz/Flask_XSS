@@ -1,9 +1,11 @@
 from flask import Flask, render_template, g, session, request
 from flask_login import LoginManager, current_user
 from flask_migrate import Migrate
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
 
-from app.utils import snake_to_title, load_user
-from app.blueprints.admin.views import admin
+from app.utils import snake_to_title, load_user, AdminOnlyModelView
+# from app.blueprints.admin.views import admin
 from app.blueprints.login.views import authentication
 from app.blueprints.xss_protection.views import xss_protection
 from app.blueprints.sandboxes.views import (
@@ -17,6 +19,11 @@ from app.models import (
 )
 
 app = Flask(__name__)
+
+sandbox_paths = {
+    unsafe_params: "/unsafe_params",
+    unsafe_cookies: "/unsafe_cookies"
+}
 
 
 def config_app(app):
@@ -38,17 +45,16 @@ def init_extensions(app):
     # Flask_Migrate
     migrate = Migrate(app, db)
 
+    # Flask_Admin
+    admin_interface = Admin(app, name='Flask XSS', template_mode='bootstrap3')
+    admin_interface.add_view(AdminOnlyModelView(User, db.session))
+
 
 def register_blueprints(app):
-    sandbox_paths = {
-        unsafe_params: "/unsafe_params",
-        unsafe_cookies: "/unsafe_cookies"
-    }
-
     for blueprint, path in sandbox_paths.items():
         app.register_blueprint(blueprint, url_prefix=path)
 
-    app.register_blueprint(admin, url_prefix='/admin')
+    # app.register_blueprint(admin, url_prefix='/admin')
     app.register_blueprint(authentication, url_prefix='/auth')
     app.register_blueprint(xss_protection, url_prefix='/toggle_xss_protection')
 

@@ -9,14 +9,14 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(200))
     email = db.Column(db.String(50))
 
-    def __init__(self, username, password, email=""):
+    def __init__(self, username='', password='', email=''):
         self.username = username
         self.password = password
         self.email = email
 
     @property
     def is_admin(self):
-        return self.username == "admin"
+        return self.username == 'admin'
 
 
 class Message(db.Model):

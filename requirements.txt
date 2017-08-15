@@ -2,3 +2,5 @@ flask
 flask_login
 flask_sqlalchemy
 flask_migrate
+flask_admin
+flask_script
