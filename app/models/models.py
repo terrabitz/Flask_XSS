@@ -23,7 +23,3 @@ class Message(db.Model):
 
     def __init__(self, message):
         self.message = message
-
-
-def load_user(user_id):
-    return User.query.filter_by(id=user_id).first()

@@ -6,33 +6,7 @@
     width: 20rem;
 }
 
-.navbar * {
-    text-align: left;
-}
-
 .reload {
     padding-bottom: 0;
     margin-bottom: 0;
-}
-
-.admin-login {
-    float: right;
-}
-
-.admin-text{
-    padding-right: 20px;
-}
-
-.navbar-brand {
-    float: left;
-    width: 100px;
-    margin-left: 20px;
-}
-
-.navbar-collapse {
-    float: right;
-}
-
-.submit {
-    margin-top: 20px;
 }

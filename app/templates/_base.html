@@ -3,42 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <title>Flask XSS</title>
-    <link rel="stylesheet" href={{ url_for("static", filename="bootstrap.min.css" ) }}>
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/superhero/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-Xqcy5ttufkC3rBa8EdiAyA1VgOGrmel2Y+wxm4K3kI3fcjTWlDWrlnxyD6hOi3PF" crossorigin="anonymous">
     <link rel="stylesheet" href={{ url_for("static", filename="main.css") }}>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
             integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
             crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
             integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
             crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
-            integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
 
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="row">
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
         <a class="navbar-brand" href="{{ url_for("index") }}">
             Flask XSS</a>
-        <div class="navbar-collapse">
-            {% if g.user.is_authenticated %}
-                <a class="admin-login" href="{{ url_for("authentication.logout") }}">
-                    <button class="btn btn-primary">Logout</button>
-                </a>
-                {% if g.user.is_admin %}
-                    <span class="admin-text navbar-text">You are logged in as admin</span>
-                    <a href="{{ url_for("admin.index") }}">
-                        <button class="btn btn-outline-success" type="button">Admin Area</button>
-                    </a>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="nav navbar-nav">
+                {% if g.user.is_authenticated %}
+                    <li>
+                        <a href="{{ url_for("authentication.logout") }}">
+                            <button class="btn btn-primary navbar-btn">Logout</button>
+                        </a>
+                    </li>
+                    {% if g.user.is_admin %}
+                        <li>
+                            <a href="{{ url_for("admin.index") }}">
+                                <button class="btn btn-success navbar-btn" type="button">Admin Area</button>
+                            </a>
+                        </li>
+                        <li>
+                            <span class="navbar-text">You are logged in as admin</span>
+                        </li>
+                    {% else %}
+                        <li>
+                            <span class="navbar-text">You are logged in as a regular user</span>
+                        </li>
+                    {% endif %}
                 {% else %}
-                    <span class="admin-text navbar-text">You are logged in as a regular user</span>
+                    <li>
+                        <a href="{{ url_for("authentication.login") }}">
+                            <button class="btn btn-primary navbar-btn">Login</button>
+                        </a>
+                    </li>
                 {% endif %}
-            {% else %}
-                <a class="admin-login" href="{{ url_for("authentication.login") }}">
-                    <button class="btn btn-primary">Login</button>
-                </a>
-            {% endif %}
+            </ul>
+
+            <form class="navbar-form navbar-right" method="GET" action={{ url_for('xss_protection.index') }}>
+                <input name="next" type="hidden" value={{ g.path }}>
+                {% if g.session['xss_protection_enabled'] %}
+                    <button class="btn btn-success navbar-btn" type="submit">Protection Enabled</button>
+                {% else %}
+                    <button class="btn btn-danger navbar-btn" type="submit">Protection Disabled</button>
+                {% endif %}
+            </form>
         </div>
     </div>
 </nav>
