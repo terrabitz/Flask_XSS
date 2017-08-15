@@ -4,3 +4,4 @@ flask_sqlalchemy
 flask_migrate
 flask_admin
 flask_script
+flask_classy

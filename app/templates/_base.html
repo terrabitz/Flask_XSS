@@ -1,12 +1,11 @@
+{% from 'components/head.html' import css_head %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Flask XSS</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/superhero/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-Xqcy5ttufkC3rBa8EdiAyA1VgOGrmel2Y+wxm4K3kI3fcjTWlDWrlnxyD6hOi3PF" crossorigin="anonymous">
-    <link rel="stylesheet" href={{ url_for("static", filename="main.css") }}>
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    {{ css_head() }}
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
             integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
             crossorigin="anonymous"></script>
@@ -47,7 +46,7 @@
                         </li>
                     {% else %}
                         <li>
-                            <span class="navbar-text">You are logged in as a regular user</span>
+                            <span class="navbar-text">You are logged in as a regular user: {{ g.user.username | safe }}</span>
                         </li>
                     {% endif %}
                 {% else %}

@@ -6,7 +6,7 @@ from functools import wraps
 def admin_required(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
-        if current_user.is_admin:
+        if hasattr(current_user, 'is_admin') and current_user.is_admin:
             return func(*args, **kwargs)
         else:
             abort(401)

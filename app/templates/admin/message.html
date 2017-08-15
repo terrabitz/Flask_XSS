@@ -1,5 +1,23 @@
 {% extends 'admin/master.html' %}
 
 {% block body %}
-
+    <h1>Messages</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Acknowledge</th>
+            <th>From</th>
+            <th>Message</th>
+            <th>Time</th>
+        </tr>
+        </thead>
+        {% for message in messages %}
+            <tr>
+            <td><a><i class="glyphicon glyphicon-glyphicon-remove"></i></a></td>
+            <td>{{ message.from_user | safe }}</td>
+            <td>{{ message.message | safe }}</td>
+            <td>{{ message.date | safe }}</td>
+            </tr>
+        {% endfor %}
+    </table>
 {% endblock %}

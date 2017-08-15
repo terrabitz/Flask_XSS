@@ -3,10 +3,11 @@ from flask_login import LoginManager, current_user
 from flask_admin import Admin
 
 from app.utils import snake_to_title, load_user
-from app.blueprints.admin.views import AdminOnlyModelView
+from app.blueprints.admin.views import AdminOnlyModelView, MessagesView
 # from app.blueprints.admin.views import admin
 from app.blueprints.login.views import authentication
 from app.blueprints.xss_protection.views import xss_protection
+from app.blueprints.api.views import api
 from app.blueprints.sandboxes.views import (
     unsafe_params,
     unsafe_cookies
@@ -37,7 +38,8 @@ def add_jinja_functions(app):
     app.jinja_env.globals.update(
         hasattr=hasattr,
         enumerate=enumerate,
-        len=len)
+        len=len
+    )
 
 
 def init_extensions(app):
@@ -53,6 +55,7 @@ def init_extensions(app):
     # Flask_Admin
     admin_interface = Admin(app, name='Flask XSS', template_mode='bootstrap3')
     admin_interface.add_view(AdminOnlyModelView(User, db.session))
+    admin_interface.add_view(MessagesView(name='Messages', endpoint='messages'))
 
 
 def register_blueprints(app):
@@ -62,6 +65,7 @@ def register_blueprints(app):
     # app.register_blueprint(admin, url_prefix='/admin')
     app.register_blueprint(authentication, url_prefix='/auth')
     app.register_blueprint(xss_protection, url_prefix='/toggle_xss_protection')
+    app.register_blueprint(api, url_prefix='/api/v1')
 
 
 @app.before_request
