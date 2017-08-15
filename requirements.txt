@@ -1,7 +1,7 @@
-flask
-flask_login
-flask_sqlalchemy
-flask_migrate
-flask_admin
-flask_script
-flask_classy
+flask==0.12.2
+flask_login==0.4.0
+flask_sqlalchemy==2.2
+flask_migrate==2.1.0
+flask_admin==1.5.0
+flask_script==2.0.5
+flask_classy==0.6.10
