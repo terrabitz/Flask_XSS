@@ -12,6 +12,7 @@ manager.add_command('runserver', Server())
 
 @manager.command
 def add_admin(password='admin'):
+    """Create an admin user"""
     def create_and_add_admin():
         print('Adding new admin user')
         admin_user = User(username='admin', password=password)
