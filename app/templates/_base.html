@@ -46,6 +46,11 @@
                         </li>
                     {% else %}
                         <li>
+                            <a href="{{ url_for("account_area.index") }}">
+                                <button class="btn btn-success navbar-btn" type="button">Account Area</button>
+                            </a>
+                        </li>
+                        <li>
                             <span class="navbar-text">You are logged in as a regular user: {{ g.user.username | safe }}</span>
                         </li>
                     {% endif %}

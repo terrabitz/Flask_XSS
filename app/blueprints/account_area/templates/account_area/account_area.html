@@ -1,0 +1,49 @@
+{% extends "_base.html" %}
+{% from "components/forms.html" import form, input, button, textarea, error_flash %}
+
+{% block body %}
+
+    <div class="jumbotron">
+        <h1>Account Area</h1>
+    </div>
+    <div class="container">
+    {{ error_flash(error=error) }}
+        <h2>Information</h2>
+        <p>Username: {{ g.user.username }}</p>
+        <p>Email: {{ g.user.email }}</p>
+        <p>Password: ***********</p>
+        <hr>
+        <br>
+    </div>
+
+    <div class="container">
+        <h2>Change Email</h2>
+        {{ form(method="POST", action=url_for("account_area.change_email"), fields=[
+            input("email", "Email", placeholder="Enter Email", type="email"),
+            button("Submit", type="submit", style_class="btn-primary")
+        ]) }}
+        <hr>
+    </div>
+
+    <div class="container">
+        <h2>Change Password</h2>
+        {{ form(method="POST", action=url_for("account_area.change_password"), fields=[
+            input("current-password", "Current Password", placeholder="Enter Current Password", type="password"),
+            input("new-password", "New Password", placeholder="Enter new password", type="password"),
+            input("confirm-password", "Confirm New Password", placeholder="Re-enter new password", type="password"),
+            button("Submit", type="submit", style_class="btn-primary")
+        ]) }}
+        <hr>
+    </div>
+
+    <div class="container">
+        <h2>Send feedback</h2>
+        {{ form(method="POST", action=url_for("account_area.send_feedback"), fields=[
+            textarea("feedback"),
+            button("Submit", type="submit", style_class="btn-primary")
+        ]) }}
+    </div>
+
+
+
+{% endblock %}

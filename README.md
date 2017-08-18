@@ -21,3 +21,5 @@ python manage.py db init
 python manage.py add_admin
 python manage.py runserver
 ```
+
+The development server should then be started on `localhost:5000`

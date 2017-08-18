@@ -1,8 +1,8 @@
 from flask import Blueprint, jsonify, request
 from flask_classy import FlaskView, route
 
-from app.models import Message, db
-from app.blueprints.decorators import admin_required
+from app.models import Message, User, db
+from app.blueprints.decorators import admin_required, is_admin_or_owning_user
 
 API_STATUS_SUCCESS = {'status': 'success'}
 API_STATUS_ERROR = {'status': 'error'}
@@ -64,6 +64,41 @@ class MessagesView(FlaskView):
         db.session.commit()
 
         return jsonify(API_STATUS_SUCCESS)
+
+
+class UsersView(FlaskView):
+    @admin_required
+    def index(self):
+        users = [user.serialize for user in User.query.all()]
+        ret = {'users': users}
+        ret.update(API_STATUS_SUCCESS)
+        return jsonify(ret)
+
+    def get(self, id):
+        if not is_admin_or_owning_user(id):
+            return jsonify(API_STATUS_ERROR)
+
+        user = User.query.filter_by(id=id).first()
+        if not user:
+            return jsonify(API_STATUS_ERROR)
+        ret = {'user': user}
+        ret.update(API_STATUS_SUCCESS)
+        return jsonify(ret)
+
+    @admin_required
+    def post(self):
+        data = request.get_json()
+        if not data:
+            return jsonify(API_STATUS_ERROR)
+        username = data.get('username', None)
+        if not username:
+            return jsonify(API_STATUS_ERROR)
+
+
+    def put(self, id):
+        if not is_admin_or_owning_user(id):
+            return jsonify(API_STATUS_ERROR)
+
 
 
 MessagesView.register(api)

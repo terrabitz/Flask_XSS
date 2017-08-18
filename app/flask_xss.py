@@ -6,6 +6,7 @@ from app.utils import snake_to_title, load_user
 from app.blueprints.admin.views import AdminOnlyModelView, MessagesView
 # from app.blueprints.admin.views import admin
 from app.blueprints.login.views import authentication
+from app.blueprints.account_area.views import account_area
 from app.blueprints.xss_protection.views import xss_protection
 from app.blueprints.api.views import api
 from app.blueprints.sandboxes.views import sandboxes
@@ -56,6 +57,7 @@ def register_blueprints(app):
     # app.register_blueprint(admin, url_prefix='/admin')
     app.register_blueprint(authentication, url_prefix='/auth')
     app.register_blueprint(xss_protection, url_prefix='/toggle_xss_protection')
+    app.register_blueprint(account_area, url_prefix='/account_area')
     app.register_blueprint(api, url_prefix='/api/v1')
 
 

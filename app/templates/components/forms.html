@@ -8,10 +8,20 @@
     <button type="{{ type }}" class="submit btn {{ style_class }}">{{ text }}</button>
 {%- endmacro %}
 
-{% macro form(fields, method="GET") %}
+{% macro textarea(name, rows=5) %}
+    <textarea class="form-control" rows={{ rows }} name={{ name }}></textarea>
+{%- endmacro %}
+
+{% macro error_flash(error=None) %}
+    {% if error %}
+        <div class="text-danger"><p>{{ error }}</p></div>
+    {% endif %}
+{%- endmacro %}
+
+{% macro form(fields, method="GET", action=None) %}
     <div class="row">
         <div class="col-md-4"></div>
-        <form class="col-md-4" method={{ method }}>
+        <form class="col-md-4" method={{ method }} {% if action %}action={{ action }}{% endif %}>
             {% for field in fields %}
                 {{ field }}
             {% endfor %}
